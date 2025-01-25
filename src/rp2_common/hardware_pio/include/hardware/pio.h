@@ -215,6 +215,10 @@ static_assert(DREQ_PIO0_TX2 == DREQ_PIO0_TX0 + 2, "");
 static_assert(DREQ_PIO0_TX3 == DREQ_PIO0_TX0 + 3, "");
 static_assert(DREQ_PIO0_RX0 == DREQ_PIO0_TX0 + NUM_PIO_STATE_MACHINES, "");
 static_assert(DREQ_PIO1_RX0 == DREQ_PIO1_TX0 + NUM_PIO_STATE_MACHINES, "");
+#if NUM_PIOS > 2
+static_assert(DREQ_PIO2_TX0 == DREQ_PIO1_RX0 + NUM_PIO_STATE_MACHINES, "");
+static_assert(DREQ_PIO2_RX0 == DREQ_PIO2_TX0 + NUM_PIO_STATE_MACHINES, "");
+#endif
 #define PIO_DREQ_NUM(pio, sm, is_tx) ((sm) + (((is_tx) ? 0 : NUM_PIO_STATE_MACHINES) + PIO_NUM(pio) * (DREQ_PIO1_TX0 - DREQ_PIO0_TX0)))
 #endif
 
@@ -919,7 +923,7 @@ int pio_set_gpio_base(PIO pio, uint gpio_base);
  * \param pio The PIO instance; e.g. \ref pio0 or \ref pio1
  * \param program the program definition
  * \return true if the program can be loaded;
- *         false if not, e.g. if there is not suitable space in the instruction memory      
+ *         false if not, e.g. if there is not suitable space in the instruction memory
  */
 bool pio_can_add_program(PIO pio, const pio_program_t *program);
 
